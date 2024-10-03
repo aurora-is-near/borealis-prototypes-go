@@ -49,6 +49,7 @@ func (m *SignedTransactionView) CloneVT() *SignedTransactionView {
 	r.Nonce = m.Nonce
 	r.ReceiverId = m.ReceiverId
 	r.Signature = m.Signature.CloneVT()
+	r.PriorityFee = m.PriorityFee
 	if rhs := m.Actions; rhs != nil {
 		tmpContainer := make([]*ActionView, len(rhs))
 		for k, v := range rhs {
@@ -133,6 +134,9 @@ func (this *SignedTransactionView) EqualVT(that *SignedTransactionView) bool {
 		return false
 	}
 	if string(this.H256Hash) != string(that.H256Hash) {
+		return false
+	}
+	if this.PriorityFee != that.PriorityFee {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -227,6 +231,11 @@ func (m *SignedTransactionView) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.PriorityFee != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.PriorityFee))
+		i--
+		dAtA[i] = 0x40
 	}
 	if len(m.H256Hash) > 0 {
 		i -= len(m.H256Hash)
@@ -372,6 +381,11 @@ func (m *SignedTransactionView) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.PriorityFee != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.PriorityFee))
+		i--
+		dAtA[i] = 0x40
+	}
 	if len(m.H256Hash) > 0 {
 		i -= len(m.H256Hash)
 		copy(dAtA[i:], m.H256Hash)
@@ -485,6 +499,9 @@ func (m *SignedTransactionView) SizeVT() (n int) {
 	l = len(m.H256Hash)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.PriorityFee != 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.PriorityFee))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -865,6 +882,25 @@ func (m *SignedTransactionView) UnmarshalVT(dAtA []byte) error {
 				m.H256Hash = []byte{}
 			}
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PriorityFee", wireType)
+			}
+			m.PriorityFee = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PriorityFee |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -1267,6 +1303,25 @@ func (m *SignedTransactionView) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			m.H256Hash = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PriorityFee", wireType)
+			}
+			m.PriorityFee = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PriorityFee |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

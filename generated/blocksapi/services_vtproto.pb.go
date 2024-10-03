@@ -215,3 +215,123 @@ var BlocksProvider_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "blocksapi/services.proto",
 }
+
+// BlocksWriterClient is the client API for BlocksWriter service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type BlocksWriterClient interface {
+	// Writes blocks continiously
+	WriteBlocks(ctx context.Context, opts ...grpc.CallOption) (BlocksWriter_WriteBlocksClient, error)
+}
+
+type blocksWriterClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewBlocksWriterClient(cc grpc.ClientConnInterface) BlocksWriterClient {
+	return &blocksWriterClient{cc}
+}
+
+func (c *blocksWriterClient) WriteBlocks(ctx context.Context, opts ...grpc.CallOption) (BlocksWriter_WriteBlocksClient, error) {
+	stream, err := c.cc.NewStream(ctx, &BlocksWriter_ServiceDesc.Streams[0], "/borealis.blocksapi.BlocksWriter/WriteBlocks", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &blocksWriterWriteBlocksClient{stream}
+	return x, nil
+}
+
+type BlocksWriter_WriteBlocksClient interface {
+	Send(*WriteBlocksRequest) error
+	Recv() (*WriteBlocksResponse, error)
+	grpc.ClientStream
+}
+
+type blocksWriterWriteBlocksClient struct {
+	grpc.ClientStream
+}
+
+func (x *blocksWriterWriteBlocksClient) Send(m *WriteBlocksRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *blocksWriterWriteBlocksClient) Recv() (*WriteBlocksResponse, error) {
+	m := new(WriteBlocksResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// BlocksWriterServer is the server API for BlocksWriter service.
+// All implementations must embed UnimplementedBlocksWriterServer
+// for forward compatibility
+type BlocksWriterServer interface {
+	// Writes blocks continiously
+	WriteBlocks(BlocksWriter_WriteBlocksServer) error
+	mustEmbedUnimplementedBlocksWriterServer()
+}
+
+// UnimplementedBlocksWriterServer must be embedded to have forward compatible implementations.
+type UnimplementedBlocksWriterServer struct {
+}
+
+func (UnimplementedBlocksWriterServer) WriteBlocks(BlocksWriter_WriteBlocksServer) error {
+	return status.Errorf(codes.Unimplemented, "method WriteBlocks not implemented")
+}
+func (UnimplementedBlocksWriterServer) mustEmbedUnimplementedBlocksWriterServer() {}
+
+// UnsafeBlocksWriterServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BlocksWriterServer will
+// result in compilation errors.
+type UnsafeBlocksWriterServer interface {
+	mustEmbedUnimplementedBlocksWriterServer()
+}
+
+func RegisterBlocksWriterServer(s grpc.ServiceRegistrar, srv BlocksWriterServer) {
+	s.RegisterService(&BlocksWriter_ServiceDesc, srv)
+}
+
+func _BlocksWriter_WriteBlocks_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BlocksWriterServer).WriteBlocks(&blocksWriterWriteBlocksServer{stream})
+}
+
+type BlocksWriter_WriteBlocksServer interface {
+	Send(*WriteBlocksResponse) error
+	Recv() (*WriteBlocksRequest, error)
+	grpc.ServerStream
+}
+
+type blocksWriterWriteBlocksServer struct {
+	grpc.ServerStream
+}
+
+func (x *blocksWriterWriteBlocksServer) Send(m *WriteBlocksResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *blocksWriterWriteBlocksServer) Recv() (*WriteBlocksRequest, error) {
+	m := new(WriteBlocksRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// BlocksWriter_ServiceDesc is the grpc.ServiceDesc for BlocksWriter service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var BlocksWriter_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "borealis.blocksapi.BlocksWriter",
+	HandlerType: (*BlocksWriterServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "WriteBlocks",
+			Handler:       _BlocksWriter_WriteBlocks_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "blocksapi/services.proto",
+}

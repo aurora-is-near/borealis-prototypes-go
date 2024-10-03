@@ -141,6 +141,24 @@ func (m *ReceiptValidationError_ActionsValidation) CloneMessageVT() proto.Messag
 	return m.CloneVT()
 }
 
+func (m *ReceiptValidationError_ReceiptSizeExceeded) CloneVT() *ReceiptValidationError_ReceiptSizeExceeded {
+	if m == nil {
+		return (*ReceiptValidationError_ReceiptSizeExceeded)(nil)
+	}
+	r := new(ReceiptValidationError_ReceiptSizeExceeded)
+	r.Size = m.Size
+	r.Limit = m.Limit
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *ReceiptValidationError) CloneVT() *ReceiptValidationError {
 	if m == nil {
 		return (*ReceiptValidationError)(nil)
@@ -222,6 +240,15 @@ func (m *ReceiptValidationError_ActionsValidation_) CloneVT() isReceiptValidatio
 	}
 	r := new(ReceiptValidationError_ActionsValidation_)
 	r.ActionsValidation = m.ActionsValidation.CloneVT()
+	return r
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) CloneVT() isReceiptValidationError_Variant {
+	if m == nil {
+		return (*ReceiptValidationError_ReceiptSizeExceeded_)(nil)
+	}
+	r := new(ReceiptValidationError_ReceiptSizeExceeded_)
+	r.ReceiptSizeExceeded = m.ReceiptSizeExceeded.CloneVT()
 	return r
 }
 
@@ -359,6 +386,28 @@ func (this *ReceiptValidationError_ActionsValidation) EqualVT(that *ReceiptValid
 
 func (this *ReceiptValidationError_ActionsValidation) EqualMessageVT(thatMsg proto.Message) bool {
 	that, ok := thatMsg.(*ReceiptValidationError_ActionsValidation)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ReceiptValidationError_ReceiptSizeExceeded) EqualVT(that *ReceiptValidationError_ReceiptSizeExceeded) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Size != that.Size {
+		return false
+	}
+	if this.Limit != that.Limit {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReceiptValidationError_ReceiptSizeExceeded) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReceiptValidationError_ReceiptSizeExceeded)
 	if !ok {
 		return false
 	}
@@ -559,6 +608,31 @@ func (this *ReceiptValidationError_ActionsValidation_) EqualVT(thatIface isRecei
 		}
 		if q == nil {
 			q = &ReceiptValidationError_ActionsValidation{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *ReceiptValidationError_ReceiptSizeExceeded_) EqualVT(thatIface isReceiptValidationError_Variant) bool {
+	that, ok := thatIface.(*ReceiptValidationError_ReceiptSizeExceeded_)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.ReceiptSizeExceeded, that.ReceiptSizeExceeded; p != q {
+		if p == nil {
+			p = &ReceiptValidationError_ReceiptSizeExceeded{}
+		}
+		if q == nil {
+			q = &ReceiptValidationError_ReceiptSizeExceeded{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -856,6 +930,49 @@ func (m *ReceiptValidationError_ActionsValidation) MarshalToSizedBufferVT(dAtA [
 	return len(dAtA) - i, nil
 }
 
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Limit != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Limit))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Size != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Size))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ReceiptValidationError) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1028,6 +1145,25 @@ func (m *ReceiptValidationError_ActionsValidation_) MarshalToSizedBufferVT(dAtA 
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x3a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ReceiptSizeExceeded != nil {
+		size, err := m.ReceiptSizeExceeded.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x42
 	}
 	return len(dAtA) - i, nil
 }
@@ -1320,6 +1456,49 @@ func (m *ReceiptValidationError_ActionsValidation) MarshalToSizedBufferVTStrict(
 	return len(dAtA) - i, nil
 }
 
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Limit != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Limit))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Size != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Size))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ReceiptValidationError) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1349,6 +1528,13 @@ func (m *ReceiptValidationError) MarshalToSizedBufferVTStrict(dAtA []byte) (int,
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if msg, ok := m.Variant.(*ReceiptValidationError_ReceiptSizeExceeded_); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
 	}
 	if msg, ok := m.Variant.(*ReceiptValidationError_ActionsValidation_); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
@@ -1535,6 +1721,25 @@ func (m *ReceiptValidationError_ActionsValidation_) MarshalToSizedBufferVTStrict
 	}
 	return len(dAtA) - i, nil
 }
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ReceiptSizeExceeded != nil {
+		size, err := m.ReceiptSizeExceeded.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x42
+	}
+	return len(dAtA) - i, nil
+}
 func (m *ReceiptValidationError_InvalidPredecessorId) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1637,6 +1842,22 @@ func (m *ReceiptValidationError_ActionsValidation) SizeVT() (n int) {
 	return n
 }
 
+func (m *ReceiptValidationError_ReceiptSizeExceeded) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Size != 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.Size))
+	}
+	if m.Limit != 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.Limit))
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
 func (m *ReceiptValidationError) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1730,6 +1951,18 @@ func (m *ReceiptValidationError_ActionsValidation_) SizeVT() (n int) {
 	_ = l
 	if m.ActionsValidation != nil {
 		l = m.ActionsValidation.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	return n
+}
+func (m *ReceiptValidationError_ReceiptSizeExceeded_) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ReceiptSizeExceeded != nil {
+		l = m.ReceiptSizeExceeded.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	return n
@@ -2331,6 +2564,95 @@ func (m *ReceiptValidationError_ActionsValidation) UnmarshalVT(dAtA []byte) erro
 	}
 	return nil
 }
+func (m *ReceiptValidationError_ReceiptSizeExceeded) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ReceiptValidationError_ReceiptSizeExceeded: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ReceiptValidationError_ReceiptSizeExceeded: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Size", wireType)
+			}
+			m.Size = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Size |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Limit", wireType)
+			}
+			m.Limit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Limit |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ReceiptValidationError) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2645,6 +2967,47 @@ func (m *ReceiptValidationError) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 				m.Variant = &ReceiptValidationError_ActionsValidation_{ActionsValidation: v}
+			}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceiptSizeExceeded", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*ReceiptValidationError_ReceiptSizeExceeded_); ok {
+				if err := oneof.ReceiptSizeExceeded.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &ReceiptValidationError_ReceiptSizeExceeded{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &ReceiptValidationError_ReceiptSizeExceeded_{ReceiptSizeExceeded: v}
 			}
 			iNdEx = postIndex
 		default:
@@ -3282,6 +3645,95 @@ func (m *ReceiptValidationError_ActionsValidation) UnmarshalVTUnsafe(dAtA []byte
 	}
 	return nil
 }
+func (m *ReceiptValidationError_ReceiptSizeExceeded) UnmarshalVTUnsafe(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ReceiptValidationError_ReceiptSizeExceeded: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ReceiptValidationError_ReceiptSizeExceeded: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Size", wireType)
+			}
+			m.Size = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Size |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Limit", wireType)
+			}
+			m.Limit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Limit |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ReceiptValidationError) UnmarshalVTUnsafe(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3596,6 +4048,47 @@ func (m *ReceiptValidationError) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 				m.Variant = &ReceiptValidationError_ActionsValidation_{ActionsValidation: v}
+			}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReceiptSizeExceeded", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*ReceiptValidationError_ReceiptSizeExceeded_); ok {
+				if err := oneof.ReceiptSizeExceeded.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &ReceiptValidationError_ReceiptSizeExceeded{}
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &ReceiptValidationError_ReceiptSizeExceeded_{ReceiptSizeExceeded: v}
 			}
 			iNdEx = postIndex
 		default:
