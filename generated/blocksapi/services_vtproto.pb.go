@@ -32,7 +32,7 @@ type BlocksProviderClient interface {
 	ListBlockStreams(ctx context.Context, in *ListBlockStreamsRequest, opts ...grpc.CallOption) (*ListBlockStreamsResponse, error)
 	// Reads individual message
 	GetBlockMessage(ctx context.Context, in *GetBlockMessageRequest, opts ...grpc.CallOption) (*GetBlockMessageResponse, error)
-	// Streams blocks continiously
+	// Streams blocks continuously
 	ReceiveBlocks(ctx context.Context, in *ReceiveBlocksRequest, opts ...grpc.CallOption) (BlocksProvider_ReceiveBlocksClient, error)
 }
 
@@ -102,7 +102,7 @@ type BlocksProviderServer interface {
 	ListBlockStreams(context.Context, *ListBlockStreamsRequest) (*ListBlockStreamsResponse, error)
 	// Reads individual message
 	GetBlockMessage(context.Context, *GetBlockMessageRequest) (*GetBlockMessageResponse, error)
-	// Streams blocks continiously
+	// Streams blocks continuously
 	ReceiveBlocks(*ReceiveBlocksRequest, BlocksProvider_ReceiveBlocksServer) error
 	mustEmbedUnimplementedBlocksProviderServer()
 }
@@ -220,7 +220,7 @@ var BlocksProvider_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BlocksWriterClient interface {
-	// Writes blocks continiously
+	// Writes blocks continuously
 	WriteBlocks(ctx context.Context, opts ...grpc.CallOption) (BlocksWriter_WriteBlocksClient, error)
 }
 
@@ -267,7 +267,7 @@ func (x *blocksWriterWriteBlocksClient) Recv() (*WriteBlocksResponse, error) {
 // All implementations must embed UnimplementedBlocksWriterServer
 // for forward compatibility
 type BlocksWriterServer interface {
-	// Writes blocks continiously
+	// Writes blocks continuously
 	WriteBlocks(BlocksWriter_WriteBlocksServer) error
 	mustEmbedUnimplementedBlocksWriterServer()
 }

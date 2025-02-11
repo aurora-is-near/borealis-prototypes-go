@@ -224,11 +224,11 @@ func (m *StateChangeCauseView_Migration) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-func (m *StateChangeCauseView_Resharding) CloneVT() *StateChangeCauseView_Resharding {
+func (m *StateChangeCauseView_ReshardingV2) CloneVT() *StateChangeCauseView_ReshardingV2 {
 	if m == nil {
-		return (*StateChangeCauseView_Resharding)(nil)
+		return (*StateChangeCauseView_ReshardingV2)(nil)
 	}
-	r := new(StateChangeCauseView_Resharding)
+	r := new(StateChangeCauseView_ReshardingV2)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -236,7 +236,23 @@ func (m *StateChangeCauseView_Resharding) CloneVT() *StateChangeCauseView_Reshar
 	return r
 }
 
-func (m *StateChangeCauseView_Resharding) CloneMessageVT() proto.Message {
+func (m *StateChangeCauseView_ReshardingV2) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) CloneVT() *StateChangeCauseView_BandwidthSchedulerStateUpdate {
+	if m == nil {
+		return (*StateChangeCauseView_BandwidthSchedulerStateUpdate)(nil)
+	}
+	r := new(StateChangeCauseView_BandwidthSchedulerStateUpdate)
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
@@ -351,12 +367,21 @@ func (m *StateChangeCauseView_Migration_) CloneVT() isStateChangeCauseView_Varia
 	return r
 }
 
-func (m *StateChangeCauseView_Resharding_) CloneVT() isStateChangeCauseView_Variant {
+func (m *StateChangeCauseView_Resharding) CloneVT() isStateChangeCauseView_Variant {
 	if m == nil {
-		return (*StateChangeCauseView_Resharding_)(nil)
+		return (*StateChangeCauseView_Resharding)(nil)
 	}
-	r := new(StateChangeCauseView_Resharding_)
+	r := new(StateChangeCauseView_Resharding)
 	r.Resharding = m.Resharding.CloneVT()
+	return r
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) CloneVT() isStateChangeCauseView_Variant {
+	if m == nil {
+		return (*StateChangeCauseView_BandwidthSchedulerStateUpdate_)(nil)
+	}
+	r := new(StateChangeCauseView_BandwidthSchedulerStateUpdate_)
+	r.BandwidthSchedulerStateUpdate = m.BandwidthSchedulerStateUpdate.CloneVT()
 	return r
 }
 
@@ -843,7 +868,7 @@ func (this *StateChangeCauseView_Migration) EqualMessageVT(thatMsg proto.Message
 	}
 	return this.EqualVT(that)
 }
-func (this *StateChangeCauseView_Resharding) EqualVT(that *StateChangeCauseView_Resharding) bool {
+func (this *StateChangeCauseView_ReshardingV2) EqualVT(that *StateChangeCauseView_ReshardingV2) bool {
 	if this == that {
 		return true
 	} else if this == nil || that == nil {
@@ -852,8 +877,24 @@ func (this *StateChangeCauseView_Resharding) EqualVT(that *StateChangeCauseView_
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
-func (this *StateChangeCauseView_Resharding) EqualMessageVT(thatMsg proto.Message) bool {
-	that, ok := thatMsg.(*StateChangeCauseView_Resharding)
+func (this *StateChangeCauseView_ReshardingV2) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*StateChangeCauseView_ReshardingV2)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *StateChangeCauseView_BandwidthSchedulerStateUpdate) EqualVT(that *StateChangeCauseView_BandwidthSchedulerStateUpdate) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *StateChangeCauseView_BandwidthSchedulerStateUpdate) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*StateChangeCauseView_BandwidthSchedulerStateUpdate)
 	if !ok {
 		return false
 	}
@@ -1137,8 +1178,8 @@ func (this *StateChangeCauseView_Migration_) EqualVT(thatIface isStateChangeCaus
 	return true
 }
 
-func (this *StateChangeCauseView_Resharding_) EqualVT(thatIface isStateChangeCauseView_Variant) bool {
-	that, ok := thatIface.(*StateChangeCauseView_Resharding_)
+func (this *StateChangeCauseView_Resharding) EqualVT(thatIface isStateChangeCauseView_Variant) bool {
+	that, ok := thatIface.(*StateChangeCauseView_Resharding)
 	if !ok {
 		return false
 	}
@@ -1150,10 +1191,35 @@ func (this *StateChangeCauseView_Resharding_) EqualVT(thatIface isStateChangeCau
 	}
 	if p, q := this.Resharding, that.Resharding; p != q {
 		if p == nil {
-			p = &StateChangeCauseView_Resharding{}
+			p = &StateChangeCauseView_ReshardingV2{}
 		}
 		if q == nil {
-			q = &StateChangeCauseView_Resharding{}
+			q = &StateChangeCauseView_ReshardingV2{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *StateChangeCauseView_BandwidthSchedulerStateUpdate_) EqualVT(thatIface isStateChangeCauseView_Variant) bool {
+	that, ok := thatIface.(*StateChangeCauseView_BandwidthSchedulerStateUpdate_)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.BandwidthSchedulerStateUpdate, that.BandwidthSchedulerStateUpdate; p != q {
+		if p == nil {
+			p = &StateChangeCauseView_BandwidthSchedulerStateUpdate{}
+		}
+		if q == nil {
+			q = &StateChangeCauseView_BandwidthSchedulerStateUpdate{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -2015,7 +2081,7 @@ func (m *StateChangeCauseView_Migration) MarshalToSizedBufferVT(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalVT() (dAtA []byte, err error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -2028,12 +2094,45 @@ func (m *StateChangeCauseView_Resharding) MarshalVT() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalToVT(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -2280,12 +2379,12 @@ func (m *StateChangeCauseView_Migration_) MarshalToSizedBufferVT(dAtA []byte) (i
 	}
 	return len(dAtA) - i, nil
 }
-func (m *StateChangeCauseView_Resharding_) MarshalToVT(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_Resharding) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
 }
 
-func (m *StateChangeCauseView_Resharding_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_Resharding) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.Resharding != nil {
 		size, err := m.Resharding.MarshalToSizedBufferVT(dAtA[:i])
@@ -2296,6 +2395,25 @@ func (m *StateChangeCauseView_Resharding_) MarshalToSizedBufferVT(dAtA []byte) (
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x5a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.BandwidthSchedulerStateUpdate != nil {
+		size, err := m.BandwidthSchedulerStateUpdate.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x62
 	}
 	return len(dAtA) - i, nil
 }
@@ -3363,7 +3481,7 @@ func (m *StateChangeCauseView_Migration) MarshalToSizedBufferVTStrict(dAtA []byt
 	return len(dAtA) - i, nil
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalVTStrict() (dAtA []byte, err error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -3376,12 +3494,45 @@ func (m *StateChangeCauseView_Resharding) MarshalVTStrict() (dAtA []byte, err er
 	return dAtA[:n], nil
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalToVTStrict(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalToVTStrict(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
 }
 
-func (m *StateChangeCauseView_Resharding) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_ReshardingV2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -3426,7 +3577,14 @@ func (m *StateChangeCauseView) MarshalToSizedBufferVTStrict(dAtA []byte) (int, e
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if msg, ok := m.Variant.(*StateChangeCauseView_Resharding_); ok {
+	if msg, ok := m.Variant.(*StateChangeCauseView_BandwidthSchedulerStateUpdate_); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Variant.(*StateChangeCauseView_Resharding); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
@@ -3696,12 +3854,12 @@ func (m *StateChangeCauseView_Migration_) MarshalToSizedBufferVTStrict(dAtA []by
 	}
 	return len(dAtA) - i, nil
 }
-func (m *StateChangeCauseView_Resharding_) MarshalToVTStrict(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_Resharding) MarshalToVTStrict(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
 }
 
-func (m *StateChangeCauseView_Resharding_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+func (m *StateChangeCauseView_Resharding) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.Resharding != nil {
 		size, err := m.Resharding.MarshalToSizedBufferVTStrict(dAtA[:i])
@@ -3712,6 +3870,25 @@ func (m *StateChangeCauseView_Resharding_) MarshalToSizedBufferVTStrict(dAtA []b
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x5a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.BandwidthSchedulerStateUpdate != nil {
+		size, err := m.BandwidthSchedulerStateUpdate.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x62
 	}
 	return len(dAtA) - i, nil
 }
@@ -4546,7 +4723,17 @@ func (m *StateChangeCauseView_Migration) SizeVT() (n int) {
 	return n
 }
 
-func (m *StateChangeCauseView_Resharding) SizeVT() (n int) {
+func (m *StateChangeCauseView_ReshardingV2) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += len(m.unknownFields)
+	return n
+}
+
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4689,7 +4876,7 @@ func (m *StateChangeCauseView_Migration_) SizeVT() (n int) {
 	}
 	return n
 }
-func (m *StateChangeCauseView_Resharding_) SizeVT() (n int) {
+func (m *StateChangeCauseView_Resharding) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -4697,6 +4884,18 @@ func (m *StateChangeCauseView_Resharding_) SizeVT() (n int) {
 	_ = l
 	if m.Resharding != nil {
 		l = m.Resharding.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	return n
+}
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate_) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.BandwidthSchedulerStateUpdate != nil {
+		l = m.BandwidthSchedulerStateUpdate.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	return n
@@ -5785,7 +5984,7 @@ func (m *StateChangeCauseView_Migration) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StateChangeCauseView_Resharding) UnmarshalVT(dAtA []byte) error {
+func (m *StateChangeCauseView_ReshardingV2) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5808,10 +6007,61 @@ func (m *StateChangeCauseView_Resharding) UnmarshalVT(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StateChangeCauseView_Resharding: wiretype end group for non-group")
+			return fmt.Errorf("proto: StateChangeCauseView_ReshardingV2: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StateChangeCauseView_Resharding: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StateChangeCauseView_ReshardingV2: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StateChangeCauseView_BandwidthSchedulerStateUpdate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StateChangeCauseView_BandwidthSchedulerStateUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -6304,16 +6554,57 @@ func (m *StateChangeCauseView) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if oneof, ok := m.Variant.(*StateChangeCauseView_Resharding_); ok {
+			if oneof, ok := m.Variant.(*StateChangeCauseView_Resharding); ok {
 				if err := oneof.Resharding.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
-				v := &StateChangeCauseView_Resharding{}
+				v := &StateChangeCauseView_ReshardingV2{}
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Variant = &StateChangeCauseView_Resharding_{Resharding: v}
+				m.Variant = &StateChangeCauseView_Resharding{Resharding: v}
+			}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BandwidthSchedulerStateUpdate", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*StateChangeCauseView_BandwidthSchedulerStateUpdate_); ok {
+				if err := oneof.BandwidthSchedulerStateUpdate.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &StateChangeCauseView_BandwidthSchedulerStateUpdate{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &StateChangeCauseView_BandwidthSchedulerStateUpdate_{BandwidthSchedulerStateUpdate: v}
 			}
 			iNdEx = postIndex
 		default:
@@ -8640,7 +8931,7 @@ func (m *StateChangeCauseView_Migration) UnmarshalVTUnsafe(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StateChangeCauseView_Resharding) UnmarshalVTUnsafe(dAtA []byte) error {
+func (m *StateChangeCauseView_ReshardingV2) UnmarshalVTUnsafe(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -8663,10 +8954,61 @@ func (m *StateChangeCauseView_Resharding) UnmarshalVTUnsafe(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StateChangeCauseView_Resharding: wiretype end group for non-group")
+			return fmt.Errorf("proto: StateChangeCauseView_ReshardingV2: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StateChangeCauseView_Resharding: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StateChangeCauseView_ReshardingV2: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *StateChangeCauseView_BandwidthSchedulerStateUpdate) UnmarshalVTUnsafe(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: StateChangeCauseView_BandwidthSchedulerStateUpdate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: StateChangeCauseView_BandwidthSchedulerStateUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -9159,16 +9501,57 @@ func (m *StateChangeCauseView) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if oneof, ok := m.Variant.(*StateChangeCauseView_Resharding_); ok {
+			if oneof, ok := m.Variant.(*StateChangeCauseView_Resharding); ok {
 				if err := oneof.Resharding.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
-				v := &StateChangeCauseView_Resharding{}
+				v := &StateChangeCauseView_ReshardingV2{}
 				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Variant = &StateChangeCauseView_Resharding_{Resharding: v}
+				m.Variant = &StateChangeCauseView_Resharding{Resharding: v}
+			}
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BandwidthSchedulerStateUpdate", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*StateChangeCauseView_BandwidthSchedulerStateUpdate_); ok {
+				if err := oneof.BandwidthSchedulerStateUpdate.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &StateChangeCauseView_BandwidthSchedulerStateUpdate{}
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &StateChangeCauseView_BandwidthSchedulerStateUpdate_{BandwidthSchedulerStateUpdate: v}
 			}
 			iNdEx = postIndex
 		default:

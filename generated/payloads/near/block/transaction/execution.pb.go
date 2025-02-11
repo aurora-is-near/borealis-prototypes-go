@@ -219,91 +219,93 @@ func (ActionCosts) EnumDescriptor() ([]byte, []int) {
 type ExtCosts int32
 
 const (
-	ExtCosts_BASE                            ExtCosts = 0
-	ExtCosts_CONTRACT_COMPILE_BASE           ExtCosts = 1
-	ExtCosts_CONTRACT_COMPILE_BYTES          ExtCosts = 2
-	ExtCosts_READ_MEMORY_BASE                ExtCosts = 3
-	ExtCosts_READ_MEMORY_BYTE                ExtCosts = 4
-	ExtCosts_WRITE_MEMORY_BASE               ExtCosts = 5
-	ExtCosts_WRITE_MEMORY_BYTE               ExtCosts = 6
-	ExtCosts_READ_REGISTER_BASE              ExtCosts = 7
-	ExtCosts_READ_REGISTER_BYTE              ExtCosts = 8
-	ExtCosts_WRITE_REGISTER_BASE             ExtCosts = 9
-	ExtCosts_WRITE_REGISTER_BYTE             ExtCosts = 10
-	ExtCosts_UTF8_DECODING_BASE              ExtCosts = 11
-	ExtCosts_UTF8_DECODING_BYTE              ExtCosts = 12
-	ExtCosts_UTF16_DECODING_BASE             ExtCosts = 13
-	ExtCosts_UTF16_DECODING_BYTE             ExtCosts = 14
-	ExtCosts_SHA256_BASE                     ExtCosts = 15
-	ExtCosts_SHA256_BYTE                     ExtCosts = 16
-	ExtCosts_KECCAK256_BASE                  ExtCosts = 17
-	ExtCosts_KECCAK256_BYTE                  ExtCosts = 18
-	ExtCosts_KECCAK512_BASE                  ExtCosts = 19
-	ExtCosts_KECCAK512_BYTE                  ExtCosts = 20
-	ExtCosts_RIPEMD160_BASE                  ExtCosts = 21
-	ExtCosts_RIPEMD160_BLOCK                 ExtCosts = 22
-	ExtCosts_ECRECOVER_BASE                  ExtCosts = 23
-	ExtCosts_LOG_BASE                        ExtCosts = 24
-	ExtCosts_LOG_BYTE                        ExtCosts = 25
-	ExtCosts_STORAGE_WRITE_BASE              ExtCosts = 26
-	ExtCosts_STORAGE_WRITE_KEY_BYTE          ExtCosts = 27
-	ExtCosts_STORAGE_WRITE_VALUE_BYTE        ExtCosts = 28
-	ExtCosts_STORAGE_WRITE_EVICTED_BYTE      ExtCosts = 29
-	ExtCosts_STORAGE_READ_BASE               ExtCosts = 30
-	ExtCosts_STORAGE_READ_KEY_BYTE           ExtCosts = 31
-	ExtCosts_STORAGE_READ_VALUE_BYTE         ExtCosts = 32
-	ExtCosts_STORAGE_REMOVE_BASE             ExtCosts = 33
-	ExtCosts_STORAGE_REMOVE_KEY_BYTE         ExtCosts = 34
-	ExtCosts_STORAGE_REMOVE_RET_VALUE_BYTE   ExtCosts = 35
-	ExtCosts_STORAGE_HAS_KEY_BASE            ExtCosts = 36
-	ExtCosts_STORAGE_HAS_KEY_BYTE            ExtCosts = 37
-	ExtCosts_STORAGE_ITER_CREATE_PREFIX_BASE ExtCosts = 38
-	ExtCosts_STORAGE_ITER_CREATE_PREFIX_BYTE ExtCosts = 39
-	ExtCosts_STORAGE_ITER_CREATE_RANGE_BASE  ExtCosts = 40
-	ExtCosts_STORAGE_ITER_CREATE_FROM_BYTE   ExtCosts = 41
-	ExtCosts_STORAGE_ITER_CREATE_TO_BYTE     ExtCosts = 42
-	ExtCosts_STORAGE_ITER_NEXT_BASE          ExtCosts = 43
-	ExtCosts_STORAGE_ITER_NEXT_KEY_BYTE      ExtCosts = 44
-	ExtCosts_STORAGE_ITER_NEXT_VALUE_BYTE    ExtCosts = 45
-	ExtCosts_TOUCHING_TRIE_NODE              ExtCosts = 46
-	ExtCosts_READ_CACHED_TRIE_NODE           ExtCosts = 47
-	ExtCosts_PROMISE_AND_BASE                ExtCosts = 48
-	ExtCosts_PROMISE_AND_PER_PROMISE         ExtCosts = 49
-	ExtCosts_PROMISE_RETURN                  ExtCosts = 50
-	ExtCosts_VALIDATOR_STAKE_BASE            ExtCosts = 51
-	ExtCosts_VALIDATOR_TOTAL_STAKE_BASE      ExtCosts = 52
-	ExtCosts_ALT_BN128_G1_MULTIEXP_BASE      ExtCosts = 53
-	ExtCosts_ALT_BN128_G1_MULTIEXP_ELEMENT   ExtCosts = 54
-	ExtCosts_ALT_BN128_PAIRING_CHECK_BASE    ExtCosts = 55
-	ExtCosts_ALT_BN128_PAIRING_CHECK_ELEMENT ExtCosts = 56
-	ExtCosts_ALT_BN128_G1_SUM_BASE           ExtCosts = 57
-	ExtCosts_ALT_BN128_G1_SUM_ELEMENT        ExtCosts = 58
-	ExtCosts_ED25519_VERIFY_BASE             ExtCosts = 59
-	ExtCosts_ED25519_VERIFY_BYTE             ExtCosts = 60
-	ExtCosts_CONTRACT_LOADING_BASE           ExtCosts = 61
-	ExtCosts_CONTRACT_LOADING_BYTES          ExtCosts = 62
-	ExtCosts_YIELD_CREATE_BASE               ExtCosts = 63
-	ExtCosts_YIELD_CREATE_BYTE               ExtCosts = 64
-	ExtCosts_YIELD_RESUME_BASE               ExtCosts = 65
-	ExtCosts_YIELD_RESUME_BYTE               ExtCosts = 66
-	ExtCosts_BLS12381_P1_SUM_BASE            ExtCosts = 67
-	ExtCosts_BLS12381_P1_SUM_ELEMENT         ExtCosts = 68
-	ExtCosts_BLS12381_P2_SUM_BASE            ExtCosts = 69
-	ExtCosts_BLS12381_P2_SUM_ELEMENT         ExtCosts = 70
-	ExtCosts_BLS12381_G1_MULTIEXP_BASE       ExtCosts = 71
-	ExtCosts_BLS12381_G1_MULTIEXP_ELEMENT    ExtCosts = 72
-	ExtCosts_BLS12381_G2_MULTIEXP_BASE       ExtCosts = 73
-	ExtCosts_BLS12381_G2_MULTIEXP_ELEMENT    ExtCosts = 74
-	ExtCosts_BLS12381_MAP_FP_TO_G1_BASE      ExtCosts = 75
-	ExtCosts_BLS12381_MAP_FP_TO_G1_ELEMENT   ExtCosts = 76
-	ExtCosts_BLS12381_MAP_FP2_TO_G2_BASE     ExtCosts = 77
-	ExtCosts_BLS12381_MAP_FP2_TO_G2_ELEMENT  ExtCosts = 78
-	ExtCosts_BLS12381_PAIRING_BASE           ExtCosts = 79
-	ExtCosts_BLS12381_PAIRING_ELEMENT        ExtCosts = 80
-	ExtCosts_BLS12381_P1_DECOMPRESS_BASE     ExtCosts = 81
-	ExtCosts_BLS12381_P1_DECOMPRESS_ELEMENT  ExtCosts = 82
-	ExtCosts_BLS12381_P2_DECOMPRESS_BASE     ExtCosts = 83
-	ExtCosts_BLS12381_P2_DECOMPRESS_ELEMENT  ExtCosts = 84
+	ExtCosts_BASE                             ExtCosts = 0
+	ExtCosts_CONTRACT_COMPILE_BASE            ExtCosts = 1
+	ExtCosts_CONTRACT_COMPILE_BYTES           ExtCosts = 2
+	ExtCosts_READ_MEMORY_BASE                 ExtCosts = 3
+	ExtCosts_READ_MEMORY_BYTE                 ExtCosts = 4
+	ExtCosts_WRITE_MEMORY_BASE                ExtCosts = 5
+	ExtCosts_WRITE_MEMORY_BYTE                ExtCosts = 6
+	ExtCosts_READ_REGISTER_BASE               ExtCosts = 7
+	ExtCosts_READ_REGISTER_BYTE               ExtCosts = 8
+	ExtCosts_WRITE_REGISTER_BASE              ExtCosts = 9
+	ExtCosts_WRITE_REGISTER_BYTE              ExtCosts = 10
+	ExtCosts_UTF8_DECODING_BASE               ExtCosts = 11
+	ExtCosts_UTF8_DECODING_BYTE               ExtCosts = 12
+	ExtCosts_UTF16_DECODING_BASE              ExtCosts = 13
+	ExtCosts_UTF16_DECODING_BYTE              ExtCosts = 14
+	ExtCosts_SHA256_BASE                      ExtCosts = 15
+	ExtCosts_SHA256_BYTE                      ExtCosts = 16
+	ExtCosts_KECCAK256_BASE                   ExtCosts = 17
+	ExtCosts_KECCAK256_BYTE                   ExtCosts = 18
+	ExtCosts_KECCAK512_BASE                   ExtCosts = 19
+	ExtCosts_KECCAK512_BYTE                   ExtCosts = 20
+	ExtCosts_RIPEMD160_BASE                   ExtCosts = 21
+	ExtCosts_RIPEMD160_BLOCK                  ExtCosts = 22
+	ExtCosts_ECRECOVER_BASE                   ExtCosts = 23
+	ExtCosts_LOG_BASE                         ExtCosts = 24
+	ExtCosts_LOG_BYTE                         ExtCosts = 25
+	ExtCosts_STORAGE_WRITE_BASE               ExtCosts = 26
+	ExtCosts_STORAGE_WRITE_KEY_BYTE           ExtCosts = 27
+	ExtCosts_STORAGE_WRITE_VALUE_BYTE         ExtCosts = 28
+	ExtCosts_STORAGE_WRITE_EVICTED_BYTE       ExtCosts = 29
+	ExtCosts_STORAGE_READ_BASE                ExtCosts = 30
+	ExtCosts_STORAGE_READ_KEY_BYTE            ExtCosts = 31
+	ExtCosts_STORAGE_READ_VALUE_BYTE          ExtCosts = 32
+	ExtCosts_STORAGE_REMOVE_BASE              ExtCosts = 33
+	ExtCosts_STORAGE_REMOVE_KEY_BYTE          ExtCosts = 34
+	ExtCosts_STORAGE_REMOVE_RET_VALUE_BYTE    ExtCosts = 35
+	ExtCosts_STORAGE_HAS_KEY_BASE             ExtCosts = 36
+	ExtCosts_STORAGE_HAS_KEY_BYTE             ExtCosts = 37
+	ExtCosts_STORAGE_ITER_CREATE_PREFIX_BASE  ExtCosts = 38
+	ExtCosts_STORAGE_ITER_CREATE_PREFIX_BYTE  ExtCosts = 39
+	ExtCosts_STORAGE_ITER_CREATE_RANGE_BASE   ExtCosts = 40
+	ExtCosts_STORAGE_ITER_CREATE_FROM_BYTE    ExtCosts = 41
+	ExtCosts_STORAGE_ITER_CREATE_TO_BYTE      ExtCosts = 42
+	ExtCosts_STORAGE_ITER_NEXT_BASE           ExtCosts = 43
+	ExtCosts_STORAGE_ITER_NEXT_KEY_BYTE       ExtCosts = 44
+	ExtCosts_STORAGE_ITER_NEXT_VALUE_BYTE     ExtCosts = 45
+	ExtCosts_TOUCHING_TRIE_NODE               ExtCosts = 46
+	ExtCosts_READ_CACHED_TRIE_NODE            ExtCosts = 47
+	ExtCosts_PROMISE_AND_BASE                 ExtCosts = 48
+	ExtCosts_PROMISE_AND_PER_PROMISE          ExtCosts = 49
+	ExtCosts_PROMISE_RETURN                   ExtCosts = 50
+	ExtCosts_VALIDATOR_STAKE_BASE             ExtCosts = 51
+	ExtCosts_VALIDATOR_TOTAL_STAKE_BASE       ExtCosts = 52
+	ExtCosts_ALT_BN128_G1_MULTIEXP_BASE       ExtCosts = 53
+	ExtCosts_ALT_BN128_G1_MULTIEXP_ELEMENT    ExtCosts = 54
+	ExtCosts_ALT_BN128_PAIRING_CHECK_BASE     ExtCosts = 55
+	ExtCosts_ALT_BN128_PAIRING_CHECK_ELEMENT  ExtCosts = 56
+	ExtCosts_ALT_BN128_G1_SUM_BASE            ExtCosts = 57
+	ExtCosts_ALT_BN128_G1_SUM_ELEMENT         ExtCosts = 58
+	ExtCosts_ED25519_VERIFY_BASE              ExtCosts = 59
+	ExtCosts_ED25519_VERIFY_BYTE              ExtCosts = 60
+	ExtCosts_CONTRACT_LOADING_BASE            ExtCosts = 61
+	ExtCosts_CONTRACT_LOADING_BYTES           ExtCosts = 62
+	ExtCosts_YIELD_CREATE_BASE                ExtCosts = 63
+	ExtCosts_YIELD_CREATE_BYTE                ExtCosts = 64
+	ExtCosts_YIELD_RESUME_BASE                ExtCosts = 65
+	ExtCosts_YIELD_RESUME_BYTE                ExtCosts = 66
+	ExtCosts_BLS12381_P1_SUM_BASE             ExtCosts = 67
+	ExtCosts_BLS12381_P1_SUM_ELEMENT          ExtCosts = 68
+	ExtCosts_BLS12381_P2_SUM_BASE             ExtCosts = 69
+	ExtCosts_BLS12381_P2_SUM_ELEMENT          ExtCosts = 70
+	ExtCosts_BLS12381_G1_MULTIEXP_BASE        ExtCosts = 71
+	ExtCosts_BLS12381_G1_MULTIEXP_ELEMENT     ExtCosts = 72
+	ExtCosts_BLS12381_G2_MULTIEXP_BASE        ExtCosts = 73
+	ExtCosts_BLS12381_G2_MULTIEXP_ELEMENT     ExtCosts = 74
+	ExtCosts_BLS12381_MAP_FP_TO_G1_BASE       ExtCosts = 75
+	ExtCosts_BLS12381_MAP_FP_TO_G1_ELEMENT    ExtCosts = 76
+	ExtCosts_BLS12381_MAP_FP2_TO_G2_BASE      ExtCosts = 77
+	ExtCosts_BLS12381_MAP_FP2_TO_G2_ELEMENT   ExtCosts = 78
+	ExtCosts_BLS12381_PAIRING_BASE            ExtCosts = 79
+	ExtCosts_BLS12381_PAIRING_ELEMENT         ExtCosts = 80
+	ExtCosts_BLS12381_P1_DECOMPRESS_BASE      ExtCosts = 81
+	ExtCosts_BLS12381_P1_DECOMPRESS_ELEMENT   ExtCosts = 82
+	ExtCosts_BLS12381_P2_DECOMPRESS_BASE      ExtCosts = 83
+	ExtCosts_BLS12381_P2_DECOMPRESS_ELEMENT   ExtCosts = 84
+	ExtCosts_STORAGE_LARGE_READ_OVERHEAD_BASE ExtCosts = 85
+	ExtCosts_STORAGE_LARGE_READ_OVERHEAD_BYTE ExtCosts = 86
 )
 
 // Enum value maps for ExtCosts.
@@ -394,93 +396,97 @@ var (
 		82: "BLS12381_P1_DECOMPRESS_ELEMENT",
 		83: "BLS12381_P2_DECOMPRESS_BASE",
 		84: "BLS12381_P2_DECOMPRESS_ELEMENT",
+		85: "STORAGE_LARGE_READ_OVERHEAD_BASE",
+		86: "STORAGE_LARGE_READ_OVERHEAD_BYTE",
 	}
 	ExtCosts_value = map[string]int32{
-		"BASE":                            0,
-		"CONTRACT_COMPILE_BASE":           1,
-		"CONTRACT_COMPILE_BYTES":          2,
-		"READ_MEMORY_BASE":                3,
-		"READ_MEMORY_BYTE":                4,
-		"WRITE_MEMORY_BASE":               5,
-		"WRITE_MEMORY_BYTE":               6,
-		"READ_REGISTER_BASE":              7,
-		"READ_REGISTER_BYTE":              8,
-		"WRITE_REGISTER_BASE":             9,
-		"WRITE_REGISTER_BYTE":             10,
-		"UTF8_DECODING_BASE":              11,
-		"UTF8_DECODING_BYTE":              12,
-		"UTF16_DECODING_BASE":             13,
-		"UTF16_DECODING_BYTE":             14,
-		"SHA256_BASE":                     15,
-		"SHA256_BYTE":                     16,
-		"KECCAK256_BASE":                  17,
-		"KECCAK256_BYTE":                  18,
-		"KECCAK512_BASE":                  19,
-		"KECCAK512_BYTE":                  20,
-		"RIPEMD160_BASE":                  21,
-		"RIPEMD160_BLOCK":                 22,
-		"ECRECOVER_BASE":                  23,
-		"LOG_BASE":                        24,
-		"LOG_BYTE":                        25,
-		"STORAGE_WRITE_BASE":              26,
-		"STORAGE_WRITE_KEY_BYTE":          27,
-		"STORAGE_WRITE_VALUE_BYTE":        28,
-		"STORAGE_WRITE_EVICTED_BYTE":      29,
-		"STORAGE_READ_BASE":               30,
-		"STORAGE_READ_KEY_BYTE":           31,
-		"STORAGE_READ_VALUE_BYTE":         32,
-		"STORAGE_REMOVE_BASE":             33,
-		"STORAGE_REMOVE_KEY_BYTE":         34,
-		"STORAGE_REMOVE_RET_VALUE_BYTE":   35,
-		"STORAGE_HAS_KEY_BASE":            36,
-		"STORAGE_HAS_KEY_BYTE":            37,
-		"STORAGE_ITER_CREATE_PREFIX_BASE": 38,
-		"STORAGE_ITER_CREATE_PREFIX_BYTE": 39,
-		"STORAGE_ITER_CREATE_RANGE_BASE":  40,
-		"STORAGE_ITER_CREATE_FROM_BYTE":   41,
-		"STORAGE_ITER_CREATE_TO_BYTE":     42,
-		"STORAGE_ITER_NEXT_BASE":          43,
-		"STORAGE_ITER_NEXT_KEY_BYTE":      44,
-		"STORAGE_ITER_NEXT_VALUE_BYTE":    45,
-		"TOUCHING_TRIE_NODE":              46,
-		"READ_CACHED_TRIE_NODE":           47,
-		"PROMISE_AND_BASE":                48,
-		"PROMISE_AND_PER_PROMISE":         49,
-		"PROMISE_RETURN":                  50,
-		"VALIDATOR_STAKE_BASE":            51,
-		"VALIDATOR_TOTAL_STAKE_BASE":      52,
-		"ALT_BN128_G1_MULTIEXP_BASE":      53,
-		"ALT_BN128_G1_MULTIEXP_ELEMENT":   54,
-		"ALT_BN128_PAIRING_CHECK_BASE":    55,
-		"ALT_BN128_PAIRING_CHECK_ELEMENT": 56,
-		"ALT_BN128_G1_SUM_BASE":           57,
-		"ALT_BN128_G1_SUM_ELEMENT":        58,
-		"ED25519_VERIFY_BASE":             59,
-		"ED25519_VERIFY_BYTE":             60,
-		"CONTRACT_LOADING_BASE":           61,
-		"CONTRACT_LOADING_BYTES":          62,
-		"YIELD_CREATE_BASE":               63,
-		"YIELD_CREATE_BYTE":               64,
-		"YIELD_RESUME_BASE":               65,
-		"YIELD_RESUME_BYTE":               66,
-		"BLS12381_P1_SUM_BASE":            67,
-		"BLS12381_P1_SUM_ELEMENT":         68,
-		"BLS12381_P2_SUM_BASE":            69,
-		"BLS12381_P2_SUM_ELEMENT":         70,
-		"BLS12381_G1_MULTIEXP_BASE":       71,
-		"BLS12381_G1_MULTIEXP_ELEMENT":    72,
-		"BLS12381_G2_MULTIEXP_BASE":       73,
-		"BLS12381_G2_MULTIEXP_ELEMENT":    74,
-		"BLS12381_MAP_FP_TO_G1_BASE":      75,
-		"BLS12381_MAP_FP_TO_G1_ELEMENT":   76,
-		"BLS12381_MAP_FP2_TO_G2_BASE":     77,
-		"BLS12381_MAP_FP2_TO_G2_ELEMENT":  78,
-		"BLS12381_PAIRING_BASE":           79,
-		"BLS12381_PAIRING_ELEMENT":        80,
-		"BLS12381_P1_DECOMPRESS_BASE":     81,
-		"BLS12381_P1_DECOMPRESS_ELEMENT":  82,
-		"BLS12381_P2_DECOMPRESS_BASE":     83,
-		"BLS12381_P2_DECOMPRESS_ELEMENT":  84,
+		"BASE":                             0,
+		"CONTRACT_COMPILE_BASE":            1,
+		"CONTRACT_COMPILE_BYTES":           2,
+		"READ_MEMORY_BASE":                 3,
+		"READ_MEMORY_BYTE":                 4,
+		"WRITE_MEMORY_BASE":                5,
+		"WRITE_MEMORY_BYTE":                6,
+		"READ_REGISTER_BASE":               7,
+		"READ_REGISTER_BYTE":               8,
+		"WRITE_REGISTER_BASE":              9,
+		"WRITE_REGISTER_BYTE":              10,
+		"UTF8_DECODING_BASE":               11,
+		"UTF8_DECODING_BYTE":               12,
+		"UTF16_DECODING_BASE":              13,
+		"UTF16_DECODING_BYTE":              14,
+		"SHA256_BASE":                      15,
+		"SHA256_BYTE":                      16,
+		"KECCAK256_BASE":                   17,
+		"KECCAK256_BYTE":                   18,
+		"KECCAK512_BASE":                   19,
+		"KECCAK512_BYTE":                   20,
+		"RIPEMD160_BASE":                   21,
+		"RIPEMD160_BLOCK":                  22,
+		"ECRECOVER_BASE":                   23,
+		"LOG_BASE":                         24,
+		"LOG_BYTE":                         25,
+		"STORAGE_WRITE_BASE":               26,
+		"STORAGE_WRITE_KEY_BYTE":           27,
+		"STORAGE_WRITE_VALUE_BYTE":         28,
+		"STORAGE_WRITE_EVICTED_BYTE":       29,
+		"STORAGE_READ_BASE":                30,
+		"STORAGE_READ_KEY_BYTE":            31,
+		"STORAGE_READ_VALUE_BYTE":          32,
+		"STORAGE_REMOVE_BASE":              33,
+		"STORAGE_REMOVE_KEY_BYTE":          34,
+		"STORAGE_REMOVE_RET_VALUE_BYTE":    35,
+		"STORAGE_HAS_KEY_BASE":             36,
+		"STORAGE_HAS_KEY_BYTE":             37,
+		"STORAGE_ITER_CREATE_PREFIX_BASE":  38,
+		"STORAGE_ITER_CREATE_PREFIX_BYTE":  39,
+		"STORAGE_ITER_CREATE_RANGE_BASE":   40,
+		"STORAGE_ITER_CREATE_FROM_BYTE":    41,
+		"STORAGE_ITER_CREATE_TO_BYTE":      42,
+		"STORAGE_ITER_NEXT_BASE":           43,
+		"STORAGE_ITER_NEXT_KEY_BYTE":       44,
+		"STORAGE_ITER_NEXT_VALUE_BYTE":     45,
+		"TOUCHING_TRIE_NODE":               46,
+		"READ_CACHED_TRIE_NODE":            47,
+		"PROMISE_AND_BASE":                 48,
+		"PROMISE_AND_PER_PROMISE":          49,
+		"PROMISE_RETURN":                   50,
+		"VALIDATOR_STAKE_BASE":             51,
+		"VALIDATOR_TOTAL_STAKE_BASE":       52,
+		"ALT_BN128_G1_MULTIEXP_BASE":       53,
+		"ALT_BN128_G1_MULTIEXP_ELEMENT":    54,
+		"ALT_BN128_PAIRING_CHECK_BASE":     55,
+		"ALT_BN128_PAIRING_CHECK_ELEMENT":  56,
+		"ALT_BN128_G1_SUM_BASE":            57,
+		"ALT_BN128_G1_SUM_ELEMENT":         58,
+		"ED25519_VERIFY_BASE":              59,
+		"ED25519_VERIFY_BYTE":              60,
+		"CONTRACT_LOADING_BASE":            61,
+		"CONTRACT_LOADING_BYTES":           62,
+		"YIELD_CREATE_BASE":                63,
+		"YIELD_CREATE_BYTE":                64,
+		"YIELD_RESUME_BASE":                65,
+		"YIELD_RESUME_BYTE":                66,
+		"BLS12381_P1_SUM_BASE":             67,
+		"BLS12381_P1_SUM_ELEMENT":          68,
+		"BLS12381_P2_SUM_BASE":             69,
+		"BLS12381_P2_SUM_ELEMENT":          70,
+		"BLS12381_G1_MULTIEXP_BASE":        71,
+		"BLS12381_G1_MULTIEXP_ELEMENT":     72,
+		"BLS12381_G2_MULTIEXP_BASE":        73,
+		"BLS12381_G2_MULTIEXP_ELEMENT":     74,
+		"BLS12381_MAP_FP_TO_G1_BASE":       75,
+		"BLS12381_MAP_FP_TO_G1_ELEMENT":    76,
+		"BLS12381_MAP_FP2_TO_G2_BASE":      77,
+		"BLS12381_MAP_FP2_TO_G2_ELEMENT":   78,
+		"BLS12381_PAIRING_BASE":            79,
+		"BLS12381_PAIRING_ELEMENT":         80,
+		"BLS12381_P1_DECOMPRESS_BASE":      81,
+		"BLS12381_P1_DECOMPRESS_ELEMENT":   82,
+		"BLS12381_P2_DECOMPRESS_BASE":      83,
+		"BLS12381_P2_DECOMPRESS_ELEMENT":   84,
+		"STORAGE_LARGE_READ_OVERHEAD_BASE": 85,
+		"STORAGE_LARGE_READ_OVERHEAD_BYTE": 86,
 	}
 )
 
@@ -1728,7 +1734,7 @@ var file_payloads_near_block_transaction_execution_proto_rawDesc = []byte{
 	0x5f, 0x52, 0x45, 0x43, 0x45, 0x49, 0x50, 0x54, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x10, 0x12, 0x12,
 	0x19, 0x0a, 0x15, 0x4e, 0x45, 0x57, 0x5f, 0x44, 0x41, 0x54, 0x41, 0x5f, 0x52, 0x45, 0x43, 0x45,
 	0x49, 0x50, 0x54, 0x5f, 0x42, 0x59, 0x54, 0x45, 0x10, 0x13, 0x12, 0x0c, 0x0a, 0x08, 0x44, 0x45,
-	0x4c, 0x45, 0x47, 0x41, 0x54, 0x45, 0x10, 0x14, 0x2a, 0x89, 0x12, 0x0a, 0x08, 0x45, 0x78, 0x74,
+	0x4c, 0x45, 0x47, 0x41, 0x54, 0x45, 0x10, 0x14, 0x2a, 0xd5, 0x12, 0x0a, 0x08, 0x45, 0x78, 0x74,
 	0x43, 0x6f, 0x73, 0x74, 0x73, 0x12, 0x08, 0x0a, 0x04, 0x42, 0x41, 0x53, 0x45, 0x10, 0x00, 0x12,
 	0x19, 0x0a, 0x15, 0x43, 0x4f, 0x4e, 0x54, 0x52, 0x41, 0x43, 0x54, 0x5f, 0x43, 0x4f, 0x4d, 0x50,
 	0x49, 0x4c, 0x45, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x10, 0x01, 0x12, 0x1a, 0x0a, 0x16, 0x43, 0x4f,
@@ -1873,7 +1879,12 @@ var file_payloads_near_block_transaction_execution_proto_rawDesc = []byte{
 	0x45, 0x43, 0x4f, 0x4d, 0x50, 0x52, 0x45, 0x53, 0x53, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x10, 0x53,
 	0x12, 0x22, 0x0a, 0x1e, 0x42, 0x4c, 0x53, 0x31, 0x32, 0x33, 0x38, 0x31, 0x5f, 0x50, 0x32, 0x5f,
 	0x44, 0x45, 0x43, 0x4f, 0x4d, 0x50, 0x52, 0x45, 0x53, 0x53, 0x5f, 0x45, 0x4c, 0x45, 0x4d, 0x45,
-	0x4e, 0x54, 0x10, 0x54, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x4e, 0x54, 0x10, 0x54, 0x12, 0x24, 0x0a, 0x20, 0x53, 0x54, 0x4f, 0x52, 0x41, 0x47, 0x45, 0x5f,
+	0x4c, 0x41, 0x52, 0x47, 0x45, 0x5f, 0x52, 0x45, 0x41, 0x44, 0x5f, 0x4f, 0x56, 0x45, 0x52, 0x48,
+	0x45, 0x41, 0x44, 0x5f, 0x42, 0x41, 0x53, 0x45, 0x10, 0x55, 0x12, 0x24, 0x0a, 0x20, 0x53, 0x54,
+	0x4f, 0x52, 0x41, 0x47, 0x45, 0x5f, 0x4c, 0x41, 0x52, 0x47, 0x45, 0x5f, 0x52, 0x45, 0x41, 0x44,
+	0x5f, 0x4f, 0x56, 0x45, 0x52, 0x48, 0x45, 0x41, 0x44, 0x5f, 0x42, 0x59, 0x54, 0x45, 0x10, 0x56,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

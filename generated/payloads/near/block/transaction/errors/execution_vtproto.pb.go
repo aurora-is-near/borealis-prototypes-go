@@ -1737,6 +1737,22 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Clone
 	return m.CloneVT()
 }
 
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) CloneVT() *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress {
+	if m == nil {
+		return (*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress)(nil)
+	}
+	r := new(TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress)
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *TxExecutionError_InvalidTxError_StorageError) CloneVT() *TxExecutionError_InvalidTxError_StorageError {
 	if m == nil {
 		return (*TxExecutionError_InvalidTxError_StorageError)(nil)
@@ -1809,6 +1825,15 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_) Clon
 	}
 	r := new(TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_)
 	r.MemTrieLoadingError = m.MemTrieLoadingError.CloneVT()
+	return r
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) CloneVT() isTxExecutionError_InvalidTxError_StorageError_Variant {
+	if m == nil {
+		return (*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_)(nil)
+	}
+	r := new(TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_)
+	r.FlatStorageReshardingAlreadyInProgress = m.FlatStorageReshardingAlreadyInProgress.CloneVT()
 	return r
 }
 
@@ -4681,6 +4706,22 @@ func (this *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Eq
 	}
 	return this.EqualVT(that)
 }
+func (this *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) EqualVT(that *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *TxExecutionError_InvalidTxError_StorageError) EqualVT(that *TxExecutionError_InvalidTxError_StorageError) bool {
 	if this == that {
 		return true
@@ -4851,6 +4892,31 @@ func (this *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_) E
 		}
 		if q == nil {
 			q = &TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) EqualVT(thatIface isTxExecutionError_InvalidTxError_StorageError_Variant) bool {
+	that, ok := thatIface.(*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.FlatStorageReshardingAlreadyInProgress, that.FlatStorageReshardingAlreadyInProgress; p != q {
+		if p == nil {
+			p = &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress{}
+		}
+		if q == nil {
+			q = &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -9313,6 +9379,39 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Marsh
 	return len(dAtA) - i, nil
 }
 
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TxExecutionError_InvalidTxError_StorageError) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -9466,6 +9565,25 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_) Mars
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
+	}
+	return len(dAtA) - i, nil
+}
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.FlatStorageReshardingAlreadyInProgress != nil {
+		size, err := m.FlatStorageReshardingAlreadyInProgress.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x3a
 	}
 	return len(dAtA) - i, nil
 }
@@ -14173,6 +14291,39 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Marsh
 	return len(dAtA) - i, nil
 }
 
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TxExecutionError_InvalidTxError_StorageError) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -14202,6 +14353,13 @@ func (m *TxExecutionError_InvalidTxError_StorageError) MarshalToSizedBufferVTStr
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if msg, ok := m.Variant.(*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
 	}
 	if msg, ok := m.Variant.(*TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
@@ -14359,6 +14517,25 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_) Mars
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
+	}
+	return len(dAtA) - i, nil
+}
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.FlatStorageReshardingAlreadyInProgress != nil {
+		size, err := m.FlatStorageReshardingAlreadyInProgress.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x3a
 	}
 	return len(dAtA) - i, nil
 }
@@ -16637,6 +16814,16 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) SizeV
 	return n
 }
 
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += len(m.unknownFields)
+	return n
+}
+
 func (m *TxExecutionError_InvalidTxError_StorageError) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -16718,6 +16905,18 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_) Size
 	_ = l
 	if m.MemTrieLoadingError != nil {
 		l = m.MemTrieLoadingError.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	return n
+}
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FlatStorageReshardingAlreadyInProgress != nil {
+		l = m.FlatStorageReshardingAlreadyInProgress.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	return n
@@ -24983,6 +25182,57 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Unmar
 	}
 	return nil
 }
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *TxExecutionError_InvalidTxError_StorageError) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -25256,6 +25506,47 @@ func (m *TxExecutionError_InvalidTxError_StorageError) UnmarshalVT(dAtA []byte) 
 					return err
 				}
 				m.Variant = &TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_{MemTrieLoadingError: v}
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FlatStorageReshardingAlreadyInProgress", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_); ok {
+				if err := oneof.FlatStorageReshardingAlreadyInProgress.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_{FlatStorageReshardingAlreadyInProgress: v}
 			}
 			iNdEx = postIndex
 		default:
@@ -34443,6 +34734,57 @@ func (m *TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError) Unmar
 	}
 	return nil
 }
+func (m *TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress) UnmarshalVTUnsafe(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *TxExecutionError_InvalidTxError_StorageError) UnmarshalVTUnsafe(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -34716,6 +35058,47 @@ func (m *TxExecutionError_InvalidTxError_StorageError) UnmarshalVTUnsafe(dAtA []
 					return err
 				}
 				m.Variant = &TxExecutionError_InvalidTxError_StorageError_MemTrieLoadingError_{MemTrieLoadingError: v}
+			}
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FlatStorageReshardingAlreadyInProgress", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Variant.(*TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_); ok {
+				if err := oneof.FlatStorageReshardingAlreadyInProgress.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress{}
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Variant = &TxExecutionError_InvalidTxError_StorageError_FlatStorageReshardingAlreadyInProgress_{FlatStorageReshardingAlreadyInProgress: v}
 			}
 			iNdEx = postIndex
 		default:
