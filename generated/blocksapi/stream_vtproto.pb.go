@@ -5,6 +5,7 @@
 package pb_blocksapi
 
 import (
+	binary "encoding/binary"
 	fmt "fmt"
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
 	emptypb1 "github.com/planetscale/vtprotobuf/types/known/emptypb"
@@ -129,6 +130,7 @@ func (m *ReceiveBlocksRequest) CloneVT() *ReceiveBlocksRequest {
 	}
 	r := new(ReceiveBlocksRequest)
 	r.StreamName = m.StreamName
+	r.StreamOrigin = m.StreamOrigin
 	r.StartPolicy = m.StartPolicy
 	r.StartTarget = m.StartTarget.CloneVT()
 	r.StopPolicy = m.StopPolicy
@@ -136,6 +138,11 @@ func (m *ReceiveBlocksRequest) CloneVT() *ReceiveBlocksRequest {
 	r.DeliverySettings = m.DeliverySettings.CloneVT()
 	r.CatchupPolicy = m.CatchupPolicy
 	r.CatchupDeliverySettings = m.CatchupDeliverySettings.CloneVT()
+	if rhs := m.CachedZstdDictsSha3Hashes; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.CachedZstdDictsSha3Hashes = tmpContainer
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -200,6 +207,28 @@ func (m *ReceiveBlocksResponse_Error) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (m *ReceiveBlocksResponse_ZstdDictionary) CloneVT() *ReceiveBlocksResponse_ZstdDictionary {
+	if m == nil {
+		return (*ReceiveBlocksResponse_ZstdDictionary)(nil)
+	}
+	r := new(ReceiveBlocksResponse_ZstdDictionary)
+	r.Sha3Hash = m.Sha3Hash
+	if rhs := m.Data; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.Data = tmpBytes
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *ReceiveBlocksResponse_ZstdDictionary) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *ReceiveBlocksResponse) CloneVT() *ReceiveBlocksResponse {
 	if m == nil {
 		return (*ReceiveBlocksResponse)(nil)
@@ -245,6 +274,15 @@ func (m *ReceiveBlocksResponse_Error_) CloneVT() isReceiveBlocksResponse_Respons
 	}
 	r := new(ReceiveBlocksResponse_Error_)
 	r.Error = m.Error.CloneVT()
+	return r
+}
+
+func (m *ReceiveBlocksResponse_ZstdDict) CloneVT() isReceiveBlocksResponse_Response {
+	if m == nil {
+		return (*ReceiveBlocksResponse_ZstdDict)(nil)
+	}
+	r := new(ReceiveBlocksResponse_ZstdDict)
+	r.ZstdDict = m.ZstdDict.CloneVT()
 	return r
 }
 
@@ -465,6 +503,18 @@ func (this *ReceiveBlocksRequest) EqualVT(that *ReceiveBlocksRequest) bool {
 	if !this.CatchupDeliverySettings.EqualVT(that.CatchupDeliverySettings) {
 		return false
 	}
+	if this.StreamOrigin != that.StreamOrigin {
+		return false
+	}
+	if len(this.CachedZstdDictsSha3Hashes) != len(that.CachedZstdDictsSha3Hashes) {
+		return false
+	}
+	for i, vx := range this.CachedZstdDictsSha3Hashes {
+		vy := that.CachedZstdDictsSha3Hashes[i]
+		if vx != vy {
+			return false
+		}
+	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -533,6 +583,28 @@ func (this *ReceiveBlocksResponse_Error) EqualVT(that *ReceiveBlocksResponse_Err
 
 func (this *ReceiveBlocksResponse_Error) EqualMessageVT(thatMsg proto.Message) bool {
 	that, ok := thatMsg.(*ReceiveBlocksResponse_Error)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *ReceiveBlocksResponse_ZstdDictionary) EqualVT(that *ReceiveBlocksResponse_ZstdDictionary) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if string(this.Data) != string(that.Data) {
+		return false
+	}
+	if this.Sha3Hash != that.Sha3Hash {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ReceiveBlocksResponse_ZstdDictionary) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ReceiveBlocksResponse_ZstdDictionary)
 	if !ok {
 		return false
 	}
@@ -633,6 +705,31 @@ func (this *ReceiveBlocksResponse_Error_) EqualVT(thatIface isReceiveBlocksRespo
 		}
 		if q == nil {
 			q = &ReceiveBlocksResponse_Error{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
+	}
+	return true
+}
+
+func (this *ReceiveBlocksResponse_ZstdDict) EqualVT(thatIface isReceiveBlocksResponse_Response) bool {
+	that, ok := thatIface.(*ReceiveBlocksResponse_ZstdDict)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if p, q := this.ZstdDict, that.ZstdDict; p != q {
+		if p == nil {
+			p = &ReceiveBlocksResponse_ZstdDictionary{}
+		}
+		if q == nil {
+			q = &ReceiveBlocksResponse_ZstdDictionary{}
 		}
 		if !p.EqualVT(q) {
 			return false
@@ -904,6 +1001,22 @@ func (m *ReceiveBlocksRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) 
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if len(m.CachedZstdDictsSha3Hashes) > 0 {
+		for iNdEx := len(m.CachedZstdDictsSha3Hashes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.CachedZstdDictsSha3Hashes[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.CachedZstdDictsSha3Hashes)*8))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.StreamOrigin) > 0 {
+		i -= len(m.StreamOrigin)
+		copy(dAtA[i:], m.StreamOrigin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamOrigin)))
+		i--
+		dAtA[i] = 0x4a
+	}
 	if m.CatchupDeliverySettings != nil {
 		size, err := m.CatchupDeliverySettings.MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -1107,6 +1220,52 @@ func (m *ReceiveBlocksResponse_Error) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	return len(dAtA) - i, nil
 }
 
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Sha3Hash != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.Sha3Hash))
+		i--
+		dAtA[i] = 0x11
+	}
+	if len(m.Data) > 0 {
+		i -= len(m.Data)
+		copy(dAtA[i:], m.Data)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Data)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ReceiveBlocksResponse) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1203,6 +1362,25 @@ func (m *ReceiveBlocksResponse_Error_) MarshalToSizedBufferVT(dAtA []byte) (int,
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ReceiveBlocksResponse_ZstdDict) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ReceiveBlocksResponse_ZstdDict) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ZstdDict != nil {
+		size, err := m.ZstdDict.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
 	}
 	return len(dAtA) - i, nil
 }
@@ -1479,6 +1657,22 @@ func (m *ReceiveBlocksRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, e
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if len(m.CachedZstdDictsSha3Hashes) > 0 {
+		for iNdEx := len(m.CachedZstdDictsSha3Hashes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.CachedZstdDictsSha3Hashes[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.CachedZstdDictsSha3Hashes)*8))
+		i--
+		dAtA[i] = 0x52
+	}
+	if len(m.StreamOrigin) > 0 {
+		i -= len(m.StreamOrigin)
+		copy(dAtA[i:], m.StreamOrigin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamOrigin)))
+		i--
+		dAtA[i] = 0x4a
+	}
 	if m.CatchupDeliverySettings != nil {
 		size, err := m.CatchupDeliverySettings.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -1682,6 +1876,52 @@ func (m *ReceiveBlocksResponse_Error) MarshalToSizedBufferVTStrict(dAtA []byte) 
 	return len(dAtA) - i, nil
 }
 
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ReceiveBlocksResponse_ZstdDictionary) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Sha3Hash != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.Sha3Hash))
+		i--
+		dAtA[i] = 0x11
+	}
+	if len(m.Data) > 0 {
+		i -= len(m.Data)
+		copy(dAtA[i:], m.Data)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Data)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *ReceiveBlocksResponse) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1711,6 +1951,13 @@ func (m *ReceiveBlocksResponse) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if msg, ok := m.Response.(*ReceiveBlocksResponse_ZstdDict); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
 	}
 	if msg, ok := m.Response.(*ReceiveBlocksResponse_Error_); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
@@ -1790,6 +2037,25 @@ func (m *ReceiveBlocksResponse_Error_) MarshalToSizedBufferVTStrict(dAtA []byte)
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ReceiveBlocksResponse_ZstdDict) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ReceiveBlocksResponse_ZstdDict) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ZstdDict != nil {
+		size, err := m.ZstdDict.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
 	}
 	return len(dAtA) - i, nil
 }
@@ -1927,6 +2193,13 @@ func (m *ReceiveBlocksRequest) SizeVT() (n int) {
 		l = m.CatchupDeliverySettings.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	l = len(m.StreamOrigin)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if len(m.CachedZstdDictsSha3Hashes) > 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(len(m.CachedZstdDictsSha3Hashes)*8)) + len(m.CachedZstdDictsSha3Hashes)*8
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -1979,6 +2252,23 @@ func (m *ReceiveBlocksResponse_Error) SizeVT() (n int) {
 	return n
 }
 
+func (m *ReceiveBlocksResponse_ZstdDictionary) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Data)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.Sha3Hash != 0 {
+		n += 9
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
 func (m *ReceiveBlocksResponse) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -2024,6 +2314,18 @@ func (m *ReceiveBlocksResponse_Error_) SizeVT() (n int) {
 	_ = l
 	if m.Error != nil {
 		l = m.Error.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	return n
+}
+func (m *ReceiveBlocksResponse_ZstdDict) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ZstdDict != nil {
+		l = m.ZstdDict.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	return n
@@ -2755,6 +3057,90 @@ func (m *ReceiveBlocksRequest) UnmarshalVT(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StreamOrigin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StreamOrigin = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 10:
+			if wireType == 1 {
+				var v uint64
+				if (iNdEx + 8) > l {
+					return io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				m.CachedZstdDictsSha3Hashes = append(m.CachedZstdDictsSha3Hashes, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protohelpers.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				elementCount = packedLen / 8
+				if elementCount != 0 && len(m.CachedZstdDictsSha3Hashes) == 0 {
+					m.CachedZstdDictsSha3Hashes = make([]uint64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					if (iNdEx + 8) > l {
+						return io.ErrUnexpectedEOF
+					}
+					v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+					iNdEx += 8
+					m.CachedZstdDictsSha3Hashes = append(m.CachedZstdDictsSha3Hashes, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field CachedZstdDictsSha3Hashes", wireType)
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -3069,6 +3455,101 @@ func (m *ReceiveBlocksResponse_Error) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *ReceiveBlocksResponse_ZstdDictionary) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ReceiveBlocksResponse_ZstdDictionary: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ReceiveBlocksResponse_ZstdDictionary: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = append(m.Data[:0], dAtA[iNdEx:postIndex]...)
+			if m.Data == nil {
+				m.Data = []byte{}
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Sha3Hash", wireType)
+			}
+			m.Sha3Hash = 0
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Sha3Hash = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ReceiveBlocksResponse) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3219,6 +3700,47 @@ func (m *ReceiveBlocksResponse) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 				m.Response = &ReceiveBlocksResponse_Error_{Error: v}
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ZstdDict", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Response.(*ReceiveBlocksResponse_ZstdDict); ok {
+				if err := oneof.ZstdDict.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &ReceiveBlocksResponse_ZstdDictionary{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Response = &ReceiveBlocksResponse_ZstdDict{ZstdDict: v}
 			}
 			iNdEx = postIndex
 		default:
@@ -3974,6 +4496,94 @@ func (m *ReceiveBlocksRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StreamOrigin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.StreamOrigin = stringValue
+			iNdEx = postIndex
+		case 10:
+			if wireType == 1 {
+				var v uint64
+				if (iNdEx + 8) > l {
+					return io.ErrUnexpectedEOF
+				}
+				v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+				iNdEx += 8
+				m.CachedZstdDictsSha3Hashes = append(m.CachedZstdDictsSha3Hashes, v)
+			} else if wireType == 2 {
+				var packedLen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protohelpers.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					packedLen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if packedLen < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				postIndex := iNdEx + packedLen
+				if postIndex < 0 {
+					return protohelpers.ErrInvalidLength
+				}
+				if postIndex > l {
+					return io.ErrUnexpectedEOF
+				}
+				var elementCount int
+				elementCount = packedLen / 8
+				if elementCount != 0 && len(m.CachedZstdDictsSha3Hashes) == 0 {
+					m.CachedZstdDictsSha3Hashes = make([]uint64, 0, elementCount)
+				}
+				for iNdEx < postIndex {
+					var v uint64
+					if (iNdEx + 8) > l {
+						return io.ErrUnexpectedEOF
+					}
+					v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+					iNdEx += 8
+					m.CachedZstdDictsSha3Hashes = append(m.CachedZstdDictsSha3Hashes, v)
+				}
+			} else {
+				return fmt.Errorf("proto: wrong wireType = %d for field CachedZstdDictsSha3Hashes", wireType)
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -4296,6 +4906,98 @@ func (m *ReceiveBlocksResponse_Error) UnmarshalVTUnsafe(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *ReceiveBlocksResponse_ZstdDictionary) UnmarshalVTUnsafe(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ReceiveBlocksResponse_ZstdDictionary: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ReceiveBlocksResponse_ZstdDictionary: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = dAtA[iNdEx:postIndex]
+			iNdEx = postIndex
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Sha3Hash", wireType)
+			}
+			m.Sha3Hash = 0
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Sha3Hash = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *ReceiveBlocksResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4446,6 +5148,47 @@ func (m *ReceiveBlocksResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 				m.Response = &ReceiveBlocksResponse_Error_{Error: v}
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ZstdDict", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if oneof, ok := m.Response.(*ReceiveBlocksResponse_ZstdDict); ok {
+				if err := oneof.ZstdDict.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &ReceiveBlocksResponse_ZstdDictionary{}
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.Response = &ReceiveBlocksResponse_ZstdDict{ZstdDict: v}
 			}
 			iNdEx = postIndex
 		default:

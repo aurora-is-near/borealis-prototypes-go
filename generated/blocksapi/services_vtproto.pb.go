@@ -335,3 +335,89 @@ var BlocksWriter_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "blocksapi/services.proto",
 }
+
+// CursorProviderClient is the client API for CursorProvider service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type CursorProviderClient interface {
+	GetCursorPosition(ctx context.Context, in *GetCursorPositionRequest, opts ...grpc.CallOption) (*GetCursorPositionResponse, error)
+}
+
+type cursorProviderClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewCursorProviderClient(cc grpc.ClientConnInterface) CursorProviderClient {
+	return &cursorProviderClient{cc}
+}
+
+func (c *cursorProviderClient) GetCursorPosition(ctx context.Context, in *GetCursorPositionRequest, opts ...grpc.CallOption) (*GetCursorPositionResponse, error) {
+	out := new(GetCursorPositionResponse)
+	err := c.cc.Invoke(ctx, "/borealis.blocksapi.CursorProvider/GetCursorPosition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CursorProviderServer is the server API for CursorProvider service.
+// All implementations must embed UnimplementedCursorProviderServer
+// for forward compatibility
+type CursorProviderServer interface {
+	GetCursorPosition(context.Context, *GetCursorPositionRequest) (*GetCursorPositionResponse, error)
+	mustEmbedUnimplementedCursorProviderServer()
+}
+
+// UnimplementedCursorProviderServer must be embedded to have forward compatible implementations.
+type UnimplementedCursorProviderServer struct {
+}
+
+func (UnimplementedCursorProviderServer) GetCursorPosition(context.Context, *GetCursorPositionRequest) (*GetCursorPositionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCursorPosition not implemented")
+}
+func (UnimplementedCursorProviderServer) mustEmbedUnimplementedCursorProviderServer() {}
+
+// UnsafeCursorProviderServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CursorProviderServer will
+// result in compilation errors.
+type UnsafeCursorProviderServer interface {
+	mustEmbedUnimplementedCursorProviderServer()
+}
+
+func RegisterCursorProviderServer(s grpc.ServiceRegistrar, srv CursorProviderServer) {
+	s.RegisterService(&CursorProvider_ServiceDesc, srv)
+}
+
+func _CursorProvider_GetCursorPosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCursorPositionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CursorProviderServer).GetCursorPosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/borealis.blocksapi.CursorProvider/GetCursorPosition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CursorProviderServer).GetCursorPosition(ctx, req.(*GetCursorPositionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// CursorProvider_ServiceDesc is the grpc.ServiceDesc for CursorProvider service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CursorProvider_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "borealis.blocksapi.CursorProvider",
+	HandlerType: (*CursorProviderServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetCursorPosition",
+			Handler:    _CursorProvider_GetCursorPosition_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "blocksapi/services.proto",
+}

@@ -5,6 +5,7 @@
 package pb_blocksapi
 
 import (
+	binary "encoding/binary"
 	fmt "fmt"
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
 	proto "google.golang.org/protobuf/proto"
@@ -48,6 +49,10 @@ func (m *BlockMessage) CloneVT() *BlockMessage {
 	r.Compression = m.Compression
 	if m.Payload != nil {
 		r.Payload = m.Payload.(interface{ CloneVT() isBlockMessage_Payload }).CloneVT()
+	}
+	if rhs := m.ZstdDictSha3Hash; rhs != nil {
+		tmpVal := *rhs
+		r.ZstdDictSha3Hash = &tmpVal
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -145,6 +150,9 @@ func (this *BlockMessage) EqualVT(that *BlockMessage) bool {
 		return false
 	}
 	if this.Compression != that.Compression {
+		return false
+	}
+	if p, q := this.ZstdDictSha3Hash, that.ZstdDictSha3Hash; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -285,6 +293,12 @@ func (m *BlockMessage) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
+	}
+	if m.ZstdDictSha3Hash != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.ZstdDictSha3Hash))
+		i--
+		dAtA[i] = 0x29
 	}
 	if m.Compression != 0 {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Compression))
@@ -454,6 +468,12 @@ func (m *BlockMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.ZstdDictSha3Hash != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.ZstdDictSha3Hash))
+		i--
+		dAtA[i] = 0x29
+	}
 	if msg, ok := m.Payload.(*BlockMessage_RawPayload); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -588,6 +608,9 @@ func (m *BlockMessage) SizeVT() (n int) {
 	}
 	if vtmsg, ok := m.Payload.(interface{ SizeVT() int }); ok {
 		n += vtmsg.SizeVT()
+	}
+	if m.ZstdDictSha3Hash != nil {
+		n += 9
 	}
 	n += len(m.unknownFields)
 	return n
@@ -866,6 +889,17 @@ func (m *BlockMessage) UnmarshalVT(dAtA []byte) error {
 			copy(v, dAtA[iNdEx:postIndex])
 			m.Payload = &BlockMessage_RawPayload{RawPayload: v}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ZstdDictSha3Hash", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.ZstdDictSha3Hash = &v
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -1241,6 +1275,17 @@ func (m *BlockMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			v := dAtA[iNdEx:postIndex]
 			m.Payload = &BlockMessage_RawPayload{RawPayload: v}
 			iNdEx = postIndex
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ZstdDictSha3Hash", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.ZstdDictSha3Hash = &v
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
