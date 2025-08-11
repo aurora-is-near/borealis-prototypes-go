@@ -44,6 +44,7 @@ func (m *BlockStreamInfo) CloneVT() *BlockStreamInfo {
 	}
 	r := new(BlockStreamInfo)
 	r.Name = m.Name
+	r.Origin = m.Origin
 	r.Description = m.Description
 	r.Format = m.Format
 	r.State = m.State.CloneVT()
@@ -96,6 +97,9 @@ func (this *BlockStreamInfo) EqualVT(that *BlockStreamInfo) bool {
 		return false
 	}
 	if !this.State.EqualVT(that.State) {
+		return false
+	}
+	if this.Origin != that.Origin {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -190,6 +194,13 @@ func (m *BlockStreamInfo) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Origin) > 0 {
+		i -= len(m.Origin)
+		copy(dAtA[i:], m.Origin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Origin)))
+		i--
+		dAtA[i] = 0x2a
 	}
 	if m.State != nil {
 		size, err := m.State.MarshalToSizedBufferVT(dAtA[:i])
@@ -306,6 +317,13 @@ func (m *BlockStreamInfo) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error)
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if len(m.Origin) > 0 {
+		i -= len(m.Origin)
+		copy(dAtA[i:], m.Origin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Origin)))
+		i--
+		dAtA[i] = 0x2a
+	}
 	if m.State != nil {
 		size, err := m.State.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -375,6 +393,10 @@ func (m *BlockStreamInfo) SizeVT() (n int) {
 	}
 	if m.State != nil {
 		l = m.State.SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.Origin)
+	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -651,6 +673,38 @@ func (m *BlockStreamInfo) UnmarshalVT(dAtA []byte) error {
 			if err := m.State.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Origin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Origin = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -952,6 +1006,42 @@ func (m *BlockStreamInfo) UnmarshalVTUnsafe(dAtA []byte) error {
 			if err := m.State.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Origin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Origin = stringValue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

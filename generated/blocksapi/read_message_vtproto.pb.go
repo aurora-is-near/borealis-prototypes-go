@@ -26,6 +26,7 @@ func (m *GetBlockMessageRequest) CloneVT() *GetBlockMessageRequest {
 	}
 	r := new(GetBlockMessageRequest)
 	r.StreamName = m.StreamName
+	r.StreamOrigin = m.StreamOrigin
 	r.MessageId = m.MessageId.CloneVT()
 	r.DeliverySettings = m.DeliverySettings.CloneVT()
 	if len(m.unknownFields) > 0 {
@@ -126,6 +127,9 @@ func (this *GetBlockMessageRequest) EqualVT(that *GetBlockMessageRequest) bool {
 		return false
 	}
 	if !this.DeliverySettings.EqualVT(that.DeliverySettings) {
+		return false
+	}
+	if this.StreamOrigin != that.StreamOrigin {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -286,6 +290,13 @@ func (m *GetBlockMessageRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error
 	if m.unknownFields != nil {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.StreamOrigin) > 0 {
+		i -= len(m.StreamOrigin)
+		copy(dAtA[i:], m.StreamOrigin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamOrigin)))
+		i--
+		dAtA[i] = 0x22
 	}
 	if m.DeliverySettings != nil {
 		size, err := m.DeliverySettings.MarshalToSizedBufferVT(dAtA[:i])
@@ -515,6 +526,13 @@ func (m *GetBlockMessageRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int,
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if len(m.StreamOrigin) > 0 {
+		i -= len(m.StreamOrigin)
+		copy(dAtA[i:], m.StreamOrigin)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamOrigin)))
+		i--
+		dAtA[i] = 0x22
+	}
 	if m.DeliverySettings != nil {
 		size, err := m.DeliverySettings.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -736,6 +754,10 @@ func (m *GetBlockMessageRequest) SizeVT() (n int) {
 		l = m.DeliverySettings.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
+	l = len(m.StreamOrigin)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -940,6 +962,38 @@ func (m *GetBlockMessageRequest) UnmarshalVT(dAtA []byte) error {
 			if err := m.DeliverySettings.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StreamOrigin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StreamOrigin = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1421,6 +1475,42 @@ func (m *GetBlockMessageRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if err := m.DeliverySettings.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StreamOrigin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.StreamOrigin = stringValue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

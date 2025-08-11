@@ -25,11 +25,6 @@ func (m *ListBlockStreamsRequest) CloneVT() *ListBlockStreamsRequest {
 		return (*ListBlockStreamsRequest)(nil)
 	}
 	r := new(ListBlockStreamsRequest)
-	if rhs := m.StreamFilter; rhs != nil {
-		tmpContainer := make([]string, len(rhs))
-		copy(tmpContainer, rhs)
-		r.StreamFilter = tmpContainer
-	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -46,12 +41,12 @@ func (m *ListBlockStreamsResponse_Result) CloneVT() *ListBlockStreamsResponse_Re
 		return (*ListBlockStreamsResponse_Result)(nil)
 	}
 	r := new(ListBlockStreamsResponse_Result)
-	if rhs := m.Response; rhs != nil {
-		tmpContainer := make(map[string]*BlockStreamInfo, len(rhs))
+	if rhs := m.Streams; rhs != nil {
+		tmpContainer := make([]*BlockStreamInfo, len(rhs))
 		for k, v := range rhs {
 			tmpContainer[k] = v.CloneVT()
 		}
-		r.Response = tmpContainer
+		r.Streams = tmpContainer
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -127,15 +122,6 @@ func (this *ListBlockStreamsRequest) EqualVT(that *ListBlockStreamsRequest) bool
 	} else if this == nil || that == nil {
 		return false
 	}
-	if len(this.StreamFilter) != len(that.StreamFilter) {
-		return false
-	}
-	for i, vx := range this.StreamFilter {
-		vy := that.StreamFilter[i]
-		if vx != vy {
-			return false
-		}
-	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
@@ -152,14 +138,11 @@ func (this *ListBlockStreamsResponse_Result) EqualVT(that *ListBlockStreamsRespo
 	} else if this == nil || that == nil {
 		return false
 	}
-	if len(this.Response) != len(that.Response) {
+	if len(this.Streams) != len(that.Streams) {
 		return false
 	}
-	for i, vx := range this.Response {
-		vy, ok := that.Response[i]
-		if !ok {
-			return false
-		}
+	for i, vx := range this.Streams {
+		vy := that.Streams[i]
 		if p, q := vx, vy; p != q {
 			if p == nil {
 				p = &BlockStreamInfo{}
@@ -312,15 +295,6 @@ func (m *ListBlockStreamsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, erro
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.StreamFilter) > 0 {
-		for iNdEx := len(m.StreamFilter) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.StreamFilter[iNdEx])
-			copy(dAtA[i:], m.StreamFilter[iNdEx])
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamFilter[iNdEx])))
-			i--
-			dAtA[i] = 0xa
-		}
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -354,11 +328,9 @@ func (m *ListBlockStreamsResponse_Result) MarshalToSizedBufferVT(dAtA []byte) (i
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Response) > 0 {
-		for k := range m.Response {
-			v := m.Response[k]
-			baseI := i
-			size, err := v.MarshalToSizedBufferVT(dAtA[:i])
+	if len(m.Streams) > 0 {
+		for iNdEx := len(m.Streams) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Streams[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -366,14 +338,6 @@ func (m *ListBlockStreamsResponse_Result) MarshalToSizedBufferVT(dAtA []byte) (i
 			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0xa
 		}
 	}
 	return len(dAtA) - i, nil
@@ -534,15 +498,6 @@ func (m *ListBlockStreamsRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.StreamFilter) > 0 {
-		for iNdEx := len(m.StreamFilter) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.StreamFilter[iNdEx])
-			copy(dAtA[i:], m.StreamFilter[iNdEx])
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StreamFilter[iNdEx])))
-			i--
-			dAtA[i] = 0xa
-		}
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -576,11 +531,9 @@ func (m *ListBlockStreamsResponse_Result) MarshalToSizedBufferVTStrict(dAtA []by
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Response) > 0 {
-		for k := range m.Response {
-			v := m.Response[k]
-			baseI := i
-			size, err := v.MarshalToSizedBufferVTStrict(dAtA[:i])
+	if len(m.Streams) > 0 {
+		for iNdEx := len(m.Streams) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Streams[iNdEx].MarshalToSizedBufferVTStrict(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -588,14 +541,6 @@ func (m *ListBlockStreamsResponse_Result) MarshalToSizedBufferVTStrict(dAtA []by
 			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0xa
 		}
 	}
 	return len(dAtA) - i, nil
@@ -737,12 +682,6 @@ func (m *ListBlockStreamsRequest) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.StreamFilter) > 0 {
-		for _, s := range m.StreamFilter {
-			l = len(s)
-			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
-		}
-	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -753,17 +692,10 @@ func (m *ListBlockStreamsResponse_Result) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.Response) > 0 {
-		for k, v := range m.Response {
-			_ = k
-			_ = v
-			l = 0
-			if v != nil {
-				l = v.SizeVT()
-			}
-			l += 1 + protohelpers.SizeOfVarint(uint64(l))
-			mapEntrySize := 1 + len(k) + protohelpers.SizeOfVarint(uint64(len(k))) + l
-			n += mapEntrySize + 1 + protohelpers.SizeOfVarint(uint64(mapEntrySize))
+	if len(m.Streams) > 0 {
+		for _, e := range m.Streams {
+			l = e.SizeVT()
+			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
 	n += len(m.unknownFields)
@@ -853,38 +785,6 @@ func (m *ListBlockStreamsRequest) UnmarshalVT(dAtA []byte) error {
 			return fmt.Errorf("proto: ListBlockStreamsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StreamFilter", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.StreamFilter = append(m.StreamFilter, string(dAtA[iNdEx:postIndex]))
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -936,9 +836,9 @@ func (m *ListBlockStreamsResponse_Result) UnmarshalVT(dAtA []byte) error {
 			return fmt.Errorf("proto: ListBlockStreamsResponse_Result: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
+		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Response", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Streams", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -965,105 +865,10 @@ func (m *ListBlockStreamsResponse_Result) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Response == nil {
-				m.Response = make(map[string]*BlockStreamInfo)
+			m.Streams = append(m.Streams, &BlockStreamInfo{})
+			if err := m.Streams[len(m.Streams)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
-			var mapkey string
-			var mapvalue *BlockStreamInfo
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protohelpers.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					var stringLenmapkey uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protohelpers.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapkey := int(stringLenmapkey)
-					if intStringLenmapkey < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					postStringIndexmapkey := iNdEx + intStringLenmapkey
-					if postStringIndexmapkey < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if postStringIndexmapkey > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
-					iNdEx = postStringIndexmapkey
-				} else if fieldNum == 2 {
-					var mapmsglen int
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protohelpers.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapmsglen |= int(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					if mapmsglen < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					postmsgIndex := iNdEx + mapmsglen
-					if postmsgIndex < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if postmsgIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = &BlockStreamInfo{}
-					if err := mapvalue.UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
-						return err
-					}
-					iNdEx = postmsgIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := protohelpers.Skip(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.Response[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1351,42 +1156,6 @@ func (m *ListBlockStreamsRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			return fmt.Errorf("proto: ListBlockStreamsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field StreamFilter", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			var stringValue string
-			if intStringLen > 0 {
-				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
-			}
-			m.StreamFilter = append(m.StreamFilter, stringValue)
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -1438,9 +1207,9 @@ func (m *ListBlockStreamsResponse_Result) UnmarshalVTUnsafe(dAtA []byte) error {
 			return fmt.Errorf("proto: ListBlockStreamsResponse_Result: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
+		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Response", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Streams", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -1467,109 +1236,10 @@ func (m *ListBlockStreamsResponse_Result) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Response == nil {
-				m.Response = make(map[string]*BlockStreamInfo)
+			m.Streams = append(m.Streams, &BlockStreamInfo{})
+			if err := m.Streams[len(m.Streams)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
-			var mapkey string
-			var mapvalue *BlockStreamInfo
-			for iNdEx < postIndex {
-				entryPreIndex := iNdEx
-				var wire uint64
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return protohelpers.ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					wire |= uint64(b&0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				fieldNum := int32(wire >> 3)
-				if fieldNum == 1 {
-					var stringLenmapkey uint64
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protohelpers.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						stringLenmapkey |= uint64(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					intStringLenmapkey := int(stringLenmapkey)
-					if intStringLenmapkey < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					postStringIndexmapkey := iNdEx + intStringLenmapkey
-					if postStringIndexmapkey < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if postStringIndexmapkey > l {
-						return io.ErrUnexpectedEOF
-					}
-					if intStringLenmapkey == 0 {
-						mapkey = ""
-					} else {
-						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
-					}
-					iNdEx = postStringIndexmapkey
-				} else if fieldNum == 2 {
-					var mapmsglen int
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return protohelpers.ErrIntOverflow
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						mapmsglen |= int(b&0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					if mapmsglen < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					postmsgIndex := iNdEx + mapmsglen
-					if postmsgIndex < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if postmsgIndex > l {
-						return io.ErrUnexpectedEOF
-					}
-					mapvalue = &BlockStreamInfo{}
-					if err := mapvalue.UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
-						return err
-					}
-					iNdEx = postmsgIndex
-				} else {
-					iNdEx = entryPreIndex
-					skippy, err := protohelpers.Skip(dAtA[iNdEx:])
-					if err != nil {
-						return err
-					}
-					if (skippy < 0) || (iNdEx+skippy) < 0 {
-						return protohelpers.ErrInvalidLength
-					}
-					if (iNdEx + skippy) > postIndex {
-						return io.ErrUnexpectedEOF
-					}
-					iNdEx += skippy
-				}
-			}
-			m.Response[mapkey] = mapvalue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
